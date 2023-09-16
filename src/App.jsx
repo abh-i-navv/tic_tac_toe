@@ -1,16 +1,22 @@
-import React, { useState } from "react";
-import Cell from "./Cell";
-import Header from "./Header";
+import React, { useEffect, useState } from "react";
+import ReactDOM from 'react-dom';
+import Squares from "./Squares";
+import GameOver from "./GameOver";
+import GameState from "./GameState";
+import Reset from "./Reset";
 
-function App() {
-  const [cells, setCells] = useState(["", "", "", "", "", "", "", "", ""]);
-  const [turn, setTurn] = useState("O");
-  const [counter, setCount] = useState(0);
-  console.log(cells);
+function App(){
 
-  var tmp = "";
+  const border = ["border-right border-bottom", "border-bottom", "border-right"];
 
-  function checker() {
+  const[cells, setCell] = useState(["","","","","","","","",""])
+  const[turn, setTurn] = useState("O");
+  const[winState, setState] = useState(GameState.inProgress);
+  const[counter,setCount] = useState(0);
+  
+  
+
+  function checkWinner(){
     const winCondition = [
       [0, 1, 2],
       [3, 4, 5],
@@ -21,50 +27,60 @@ function App() {
       [1, 4, 7],
       [2, 5, 8]
     ];
+    
+
+    
 
     for (let curr of winCondition) {
       const [a, b, c] = curr;
       if (cells[a] !== "" && cells[a] === cells[b] && cells[a] === cells[c]) {
-        tmp = cells[a];
-        return true;
+        if(cells[a] === "O"){
+          setState(GameState.O);
+        }
+        else if(cells[a] === "X"){
+          setState(GameState.X);
+        }         
       }
+    
     }
-    return false;
+    
+    setCount(counter+1);
+
   }
 
-  var gameOver = checker();
-  if (gameOver) {
-    console.log(tmp);
+
+  useEffect(() => {
+    checkWinner();
+  },[cells])
+
+  if(winState === 0 && counter >9){
+    setState(GameState.draw);
   }
 
-  if (counter === 9 && !gameOver) {
-    tmp = "No One";
-  }
-
-  return (
-    <div className="App">
-      <Header />
-      <div className="container">
-        <div className="board">
-          {cells.map((val, index) => (
-            <Cell
-              key={index}
-              id={index}
-              cell={val}
-              go={turn}
-              setGo={setTurn}
-              updater={setCells}
-              curr={cells}
-              turns={counter}
-              tie={setCount}
-              win={gameOver}
-            />
-          ))}
-        </div>
+  return (<div>
+    <div className="container">
+      <div className="header">
+      <h1>Tic-Tac Toe</h1>
+      <GameOver winState={winState}/>
       </div>
-      <h1 className="header"> {tmp ? tmp + " is winner" : null}</h1>
+    
+
+      <div className="board">
+        <Squares id = {0} value = {cells[0]} additionalClass={border[0]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+        <Squares id = {1} value = {cells[1]} additionalClass={border[0]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+        <Squares id = {2} value = {cells[2]} additionalClass={border[1]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+        <Squares id = {3} value = {cells[3]} additionalClass={border[0]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+        <Squares id = {4} value = {cells[4]} additionalClass={border[0]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+        <Squares id = {5} value = {cells[5]} additionalClass={border[1]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+        <Squares id = {6} value = {cells[6]} additionalClass={border[2]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+        <Squares id = {7} value = {cells[7]} additionalClass={border[2]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+        <Squares id = {8} value = {cells[8]} setTurn={setTurn} turn={turn} cells ={cells} setCell={setCell} winState={winState}/>
+      </div>
+      <Reset winState={winState} setTurn={setTurn} setCell={setCell} setState={setState} setCount={setCount}/>
+      
     </div>
-  );
+
+  </div>)
 }
 
 export default App;
