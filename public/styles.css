@@ -1,37 +1,72 @@
-* {
+*{
     background-color: #443d3d;
-    padding: 0;
-    margin: 0;
-    box-sizing: border-box;
-  }
-  
-  .header {
-    margin-top: 50px;
-    margin-bottom: 30px;
-    font-family: sans-serif;
+}
+
+h1 {
+    font-size: 4em;
     text-align: center;
     color: #e4e4e4;
-  }
-  
-  .container {
-    margin: 0;
-    padding: 0;
+    margin-bottom: 45px;
+}
+
+.container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+
+.board {
+    position: relative;
+    display: grid;
+    grid-template-columns: repeat(3,120px);
+    grid-template-rows: repeat(3,120px);
+}
+
+.square{
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 60vh;
-  }
-  
-  .board {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: repeat(3, 1fr);
-    grid-gap: 5px;
-    background-color: white;
-  }
-  
-  .square {
-    width: 120px;
-    height: 120px;
-  }
-  
+    font-size: 5em;
+    color: #e4e4e4;
+    cursor: pointer;
+}
+
+.border-right{
+    border-right: 4px solid #e4e4e4;
+}
+
+.border-bottom{
+    border-bottom: 4px solid #e4e4e4;
+}
+
+.X-hover:hover::after{
+    content: "X";
+    opacity: 0.4;
+}
+
+.O-hover:hover::after{
+    content: "O";
+    opacity: 0.4;
+}
+
+.game-over{
+    text-align: center;
+    border: #e4e4e4 dotted 2px;
+    color: #e4e4e4;
+    padding: 10px;
+    font-size: 2em;
+    margin: 30px;
+
+}
+
+.reset {
+    color: #e4e4e4;
+
+}
+
+svg{
+    margin-top: 30px;
+    cursor: pointer;
+}
